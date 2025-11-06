@@ -1,4 +1,4 @@
-<!-- frontend/index.html -->
+<!-- frontend/index.html (Nova UI v2) -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,23 +10,26 @@
 <body>
     <div class="container">
         <header>
-            <h1>🧠 IA de Aprendizagem</h1>
-            <p>Dê um tópico para a IA pesquisar, ler e aprender.</p>
+            <div class="header-icon">🧠</div>
+            <div class="header-text">
+                <h1>IA de Aprendizagem</h1>
+                <p>Um agente autônomo para pesquisar e aprender.</p>
+            </div>
         </header>
+
         <div class="input-section">
-            <input type="text" id="topic-input" placeholder="Ex: Buracos negros">
+            <input type="text" id="topic-input" placeholder="Ex: O que é um quasar?">
             <button id="learn-button">Aprender</button>
         </div>
+
         <div class="results-section">
-            <h2>Resultados</h2>
-            <div id="status">Aguardando um tópico...</div>
+            <div id="status">Aguardando um tópico para iniciar a aprendizagem...</div>
             <ul id="results-list"></ul>
         </div>
     </div>
+
     <script>
-        // ▼▼▼ VOCÊ VAI EDITAR ESTA LINHA NO PASSO 5 ▼▼▼
         const BACKEND_URL = 'https://ai-test-m37m.onrender.com/aprender';
-        // ▲▲▲ VOCÊ VAI EDITAR ESTA LINHA NO PASSO 5 ▲▲▲
 
         const topicInput = document.getElementById('topic-input');
         const learnButton = document.getElementById('learn-button');
@@ -39,23 +42,42 @@
                 statusDiv.textContent = 'Por favor, digite um tópico.';
                 return;
             }
+
             learnButton.disabled = true;
-            statusDiv.innerHTML = '<div class="loader"></div>';
             resultsList.innerHTML = '';
+            statusDiv.innerHTML = `
+                <div class="loader-container">
+                    <div class="loader"></div>
+                    <span>Processando... O servidor pode estar "acordando", aguarde até 60s.</span>
+                </div>`;
+
             try {
+                // AbortController para timeout mais longo, lidando com o "cold start" do Render
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // Timeout de 60 segundos
+
                 const response = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ topic: topic }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`Erro do servidor: ${response.statusText}`);
+                }
+
                 const data = await response.json();
-                statusDiv.textContent = '';
+                statusDiv.innerHTML = '';
+
                 if (data.error) {
                     statusDiv.textContent = `Erro: ${data.error}`;
                 } else {
                     if (data.conhecimento_previo && data.conhecimento_previo.length > 0) {
                         const prevHeader = document.createElement('li');
-                        prevHeader.innerHTML = '<strong>💡 Conhecimento Prévio:</strong>';
+                        prevHeader.innerHTML = '<strong>💡 Conhecimento Prévio Encontrado:</strong>';
                         resultsList.appendChild(prevHeader);
                         data.conhecimento_previo.forEach(fato => {
                             const li = document.createElement('li');
@@ -63,17 +85,25 @@
                             resultsList.appendChild(li);
                         });
                     }
+                    
                     const newHeader = document.createElement('li');
                     newHeader.innerHTML = `<strong>✅ ${data.mensagem}</strong>`;
                     resultsList.appendChild(newHeader);
+                    
                     if (data.fonte) {
                         const fonteLi = document.createElement('li');
-                        fonteLi.innerHTML = `🔗 Fonte: <a href="${data.fonte}" target="_blank" rel="noopener noreferrer">${data.fonte}</a>`;
+                        fonteLi.innerHTML = `🔗 Fonte utilizada: <a href="${data.fonte}" target="_blank" rel="noopener noreferrer">${data.fonte}</a>`;
                         resultsList.appendChild(fonteLi);
                     }
                 }
+
             } catch (error) {
-                statusDiv.textContent = 'Ocorreu um erro de comunicação com o servidor. Verifique se a URL do backend está correta.';
+                if (error.name === 'AbortError') {
+                    statusDiv.textContent = 'O servidor demorou muito para responder (timeout). Tente novamente.';
+                } else {
+                    statusDiv.textContent = 'Ocorreu um erro de comunicação com o servidor. Verifique o console do navegador para mais detalhes (F12).';
+                }
+                console.error('Detalhes do erro:', error);
             } finally {
                 learnButton.disabled = false;
             }
