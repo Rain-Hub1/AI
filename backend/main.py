@@ -1,4 +1,4 @@
-# backend/main.py (Versão Final com CORS Robusto)
+# backend/main.py (Versão Final v5 - Usando ScrapingBee)
 
 import os
 import json
@@ -7,20 +7,17 @@ import nltk
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bs4 import BeautifulSoup
-from googlesearch import search
-from sklearn.feature_extraction.text import TfidfVectorizer
+from urllib.parse import urlencode # Importa a função para codificar a URL
 
 # --- 0. CONFIGURAÇÃO DO SERVIDOR ---
 app = Flask(__name__)
-
-# Configuração de CORS mais aberta para garantir que funcione em qualquer cenário.
-# Aceita pedidos de qualquer origem, o que é seguro para uma API pública de leitura.
 CORS(app)
 
 # --- 1. CONFIGURAÇÃO DAS CHAVES ---
 APPLICATION_ID = os.environ.get("BACK4APP_APPLICATION_ID")
 REST_API_KEY = os.environ.get("BACK4APP_REST_API_KEY")
 SERPER_API_KEY = os.environ.get("SERPER_API_KEY")
+SCRAPINGBEE_API_KEY = os.environ.get("SCRAPINGBEE_API_KEY") # Chave correta
 
 BACK4APP_URL = "https://parseapi.back4app.com/classes/Conhecimento"
 BACK4APP_HEADERS = {
@@ -35,6 +32,7 @@ except LookupError:
     nltk.download('punkt')
 
 # --- 2. HABILIDADES E MEMÓRIA DA IA ---
+
 def pesquisar_topico(topico):
     print(f"Buscando com Serper API sobre: {topico}")
     url = "https://google.serper.dev/search"
@@ -50,15 +48,40 @@ def pesquisar_topico(topico):
     return None
 
 def extrair_texto_da_url(url):
+    """Tenta ler o conteúdo de uma URL com dois métodos diferentes."""
+    # Plano A: Leitura direta com 'requests'
+    print(f"Tentando ler {url} com método direto...")
     try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
         resposta = requests.get(url, headers=headers, timeout=10)
-        if resposta.status_code != 200: return None
-        soup = BeautifulSoup(resposta.content, 'html.parser')
-        for el in soup(["script", "style", "nav", "footer", "aside"]): el.decompose()
-        return soup.get_text(separator='\n', strip=True)
+        if resposta.status_code == 200 and resposta.text:
+            print("Sucesso com método direto.")
+            soup = BeautifulSoup(resposta.content, 'html.parser')
+            for el in soup(["script", "style", "nav", "footer", "aside", "header"]): el.decompose()
+            return soup.get_text(separator='\n', strip=True)
     except requests.RequestException:
-        return None
+        print("Método direto falhou.")
+
+    # Plano B: Leitura com API de Scraping (ScrapingBee)
+    print(f"Fallback para API de scraping (ScrapingBee)...")
+    try:
+        params = {
+            'api_key': SCRAPINGBEE_API_KEY,
+            'url': url,
+            'render_js': 'false' # Mais rápido, não executa JS
+        }
+        scrapingbee_url = f"https://app.scrapingbee.com/api/v1/?{urlencode(params)}"
+        
+        resposta = requests.get(scrapingbee_url, timeout=30)
+        if resposta.ok and resposta.text:
+            print("Sucesso com ScrapingBee.")
+            soup = BeautifulSoup(resposta.content, 'html.parser')
+            for el in soup(["script", "style", "nav", "footer", "aside", "header"]): el.decompose()
+            return soup.get_text(separator='\n', strip=True)
+    except requests.RequestException:
+        print("API ScrapingBee também falhou.")
+    
+    return None
 
 def aprender_com_texto(texto):
     frases = nltk.sent_tokenize(texto, language='portuguese')
@@ -97,7 +120,7 @@ def consultar_memoria(topico):
 # --- 3. ROTAS DA API ---
 @app.route('/')
 def home():
-    return "API da IA está funcionando. v3 - CORS Aberto."
+    return "API da IA está funcionando. v5 - Leitor com ScrapingBee."
 
 @app.route('/aprender', methods=['POST'])
 def rota_aprender():
@@ -106,17 +129,27 @@ def rota_aprender():
     if not topico: return jsonify({"error": "Nenhum tópico fornecido."}), 400
     
     conhecimento_previo = consultar_memoria(topico)
+    
     url = pesquisar_topico(topico)
     if not url: return jsonify({"error": "Não foi possível encontrar uma fonte na internet."})
     
     texto = extrair_texto_da_url(url)
-    if not texto: return jsonify({"error": "Não foi possível ler o conteúdo da fonte."})
+    if not texto:
+        return jsonify({
+            "error": "Não foi possível ler o conteúdo da fonte, mesmo com a API de scraping.",
+            "fonte_com_problema": url
+        })
     
     novo_conhecimento = aprender_com_texto(texto)
     fatos_salvos = salvar_conhecimento(novo_conhecimento)
     mensagem = f"Aprendizagem concluída! {fatos_salvos} novo(s) fato(s) adicionado(s)."
     
-    return jsonify({"conhecimento_previo": conhecimento_previo, "mensagem": mensagem, "fonte": url})
+    return jsonify({
+        "conhecimento_previo": conhecimento_previo,
+        "mensagem": mensagem,
+        "fonte": url,
+        "texto_lido": texto[:1000] + "..."
+    })
 
 # --- 4. INICIA O SERVIDOR ---
 if __name__ == "__main__":
