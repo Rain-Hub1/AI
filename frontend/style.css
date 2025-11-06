@@ -1,1 +1,121 @@
+/* static/style.css */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:root {
+    --bg-color: #1c1c1e;
+    --surface-color: #2c2c2e;
+    --primary-color: #0a84ff;
+    --text-color: #f2f2f7;
+    --subtle-text-color: #8e8e93;
+    --border-color: #3a3a3c;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: var(--subtle-text-color);
+    font-size: 1.1rem;
+}
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#topic-input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    font-size: 1rem;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+}
+
+#learn-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#learn-button:hover {
+    background-color: #3395ff;
+}
+
+.results-section {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 100px;
+}
+
+.results-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+#status {
+    color: var(--subtle-text-color);
+}
+
+#results-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#results-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    word-wrap: break-word;
+}
+#results-list li:last-child {
+    border-bottom: none;
+}
+
+.loader {
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
