@@ -12,12 +12,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 # --- 0. CONFIGURAÇÃO DO SERVIDOR ---
 app = Flask(__name__)
-CORS(app) # Permite que o frontend (GitHub Pages) chame este backend (Render)
+CORS(app) # Permite que o frontend chame este backend
 
-# --- 1. CONFIGURAÇÃO DO BACK4APP ---
-# As chaves serão configuradas como variáveis de ambiente no Render
+# --- 1. CONFIGURAÇÃO DAS CHAVES (SERÃO ADICIONADAS NO RENDER) ---
 APPLICATION_ID = os.environ.get("BACK4APP_APPLICATION_ID")
 REST_API_KEY = os.environ.get("BACK4APP_REST_API_KEY")
+SERPER_API_KEY = os.environ.get("SERPER_API_KEY")
+
 BACK4APP_URL = "https://parseapi.back4app.com/classes/Conhecimento"
 BACK4APP_HEADERS = {
     "X-Parse-Application-Id": APPLICATION_ID,
@@ -32,12 +33,27 @@ except LookupError:
     print("Baixando pacote 'punkt'...")
     nltk.download('punkt')
 
-# --- 2. HABILIDADES E MEMÓRIA DA IA (As mesmas funções de antes) ---
+# --- 2. HABILIDADES E MEMÓRIA DA IA ---
+
 def pesquisar_topico(topico):
+    """Pesquisa usando a Serper API e retorna a primeira URL."""
+    print("Buscando com Serper API...")
+    url = "https://google.serper.dev/search"
+    payload = json.dumps({"q": topico, "gl": "br", "num": 1})
+    headers = {
+        'X-API-KEY': SERPER_API_KEY,
+        'Content-Type': 'application/json'
+    }
     try:
-        return next(search(topico, num_results=1, lang="pt"), None)
-    except Exception:
+        response = requests.post(url, headers=headers, data=payload, timeout=10)
+        if response.ok:
+            results = response.json().get('organic', [])
+            if results:
+                return results[0].get('link')
+    except requests.RequestException as e:
+        print(f"Erro na API Serper: {e}")
         return None
+    return None
 
 def extrair_texto_da_url(url):
     try:
@@ -88,23 +104,19 @@ def consultar_memoria(topico):
 
 @app.route('/')
 def home():
-    """Rota inicial apenas para verificar se a API está no ar."""
     return "API da IA está funcionando!"
 
 @app.route('/aprender', methods=['POST'])
 def rota_aprender():
-    """Recebe um tópico do frontend, processa e retorna o resultado."""
     data = request.get_json()
     topico = data.get('topic')
-
     if not topico:
         return jsonify({"error": "Nenhum tópico fornecido."}), 400
 
     conhecimento_previo = consultar_memoria(topico)
     url = pesquisar_topico(topico)
-    
     if not url:
-        return jsonify({"error": "Não foi possível encontrar uma fonte na internet."})
+        return jsonify({"error": "Não foi possível encontrar uma fonte na internet via API."})
 
     texto = extrair_texto_da_url(url)
     if not texto:
@@ -112,7 +124,6 @@ def rota_aprender():
 
     novo_conhecimento = aprender_com_texto(texto)
     fatos_salvos = salvar_conhecimento(novo_conhecimento)
-
     mensagem = f"Aprendizagem concluída! {fatos_salvos} novo(s) fato(s) adicionado(s)."
     
     return jsonify({
@@ -123,6 +134,4 @@ def rota_aprender():
 
 # --- 4. INICIA O SERVIDOR ---
 if __name__ == "__main__":
-    # O Gunicorn usará esta variável 'app' para rodar o servidor.
-    # A linha abaixo é apenas para testes locais, não será usada pelo Render.
-    app.run(debug=True)
+    app.run()
