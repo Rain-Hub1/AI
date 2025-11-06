@@ -1,20 +1,26 @@
-# backend/main.py
+# backend/main.py (Versão Final com Correção de CORS Explícita)
 
 import os
 import json
 import requests
 import nltk
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS  # Importa a biblioteca CORS
 from bs4 import BeautifulSoup
 from googlesearch import search
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# --- 0. CONFIGURAÇÃO DO SERVIDOR ---
+# --- 0. CONFIGURAÇÃO DO SERVIDOR FLASK ---
 app = Flask(__name__)
-CORS(app) # Permite que o frontend chame este backend
 
-# --- 1. CONFIGURAÇÃO DAS CHAVES (SERÃO ADICIONADAS NO RENDER) ---
+# ▼▼▼ ESTA É A CORREÇÃO IMPORTANTE ▼▼▼
+# Configuração explícita do CORS para permitir pedidos vindos do seu GitHub Pages.
+# Isso diz ao servidor para aceitar comunicação vinda do seu site específico.
+CORS(app, resources={r"/aprender": {"origins": "https://rain-hub1.github.io"}})
+# ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+
+
+# --- 1. CONFIGURAÇÃO DAS CHAVES (LIDAS DO AMBIENTE DO RENDER) ---
 APPLICATION_ID = os.environ.get("BACK4APP_APPLICATION_ID")
 REST_API_KEY = os.environ.get("BACK4APP_REST_API_KEY")
 SERPER_API_KEY = os.environ.get("SERPER_API_KEY")
@@ -26,18 +32,18 @@ BACK4APP_HEADERS = {
     "Content-Type": "application/json"
 }
 
-# Baixar o recurso 'punkt' do NLTK
+# Baixar o recurso 'punkt' do NLTK, se necessário
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     print("Baixando pacote 'punkt'...")
     nltk.download('punkt')
 
-# --- 2. HABILIDADES E MEMÓRIA DA IA ---
+# --- 2. HABILIDADES E MEMÓRIA DA IA (Nenhuma alteração aqui) ---
 
 def pesquisar_topico(topico):
     """Pesquisa usando a Serper API e retorna a primeira URL."""
-    print("Buscando com Serper API...")
+    print(f"Buscando com Serper API sobre: {topico}")
     url = "https://google.serper.dev/search"
     payload = json.dumps({"q": topico, "gl": "br", "num": 1})
     headers = {
@@ -100,14 +106,16 @@ def consultar_memoria(topico):
     except Exception:
         return []
 
-# --- 3. ROTAS DA API ---
+# --- 3. ROTAS DA API (Nenhuma alteração aqui) ---
 
 @app.route('/')
 def home():
-    return "API da IA está funcionando!"
+    """Rota inicial apenas para verificar se a API está no ar."""
+    return "API da IA está funcionando! v2 com CORS explícito."
 
 @app.route('/aprender', methods=['POST'])
 def rota_aprender():
+    """Recebe um tópico do frontend, processa e retorna o resultado."""
     data = request.get_json()
     topico = data.get('topic')
     if not topico:
@@ -134,4 +142,5 @@ def rota_aprender():
 
 # --- 4. INICIA O SERVIDOR ---
 if __name__ == "__main__":
+    # O Gunicorn (no Render) usará a variável 'app' para rodar o servidor.
     app.run()
