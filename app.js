@@ -11,7 +11,6 @@ const alphabet = katakana + latin + nums;
 
 const fontSize = 16;
 const columns = canvas.width / fontSize;
-
 const rainDrops = [];
 
 for (let x = 0; x < columns; x++) {
@@ -21,7 +20,6 @@ for (let x = 0; x < columns; x++) {
 const draw = () => {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.fillStyle = '#0F0';
     ctx.font = fontSize + 'px monospace';
 
@@ -36,7 +34,19 @@ const draw = () => {
     }
 };
 
-setInterval(draw, 30);
+const matrixInterval = setInterval(draw, 30);
+
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const homeContent = document.getElementById('home-content');
+
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        homeContent.classList.remove('hidden');
+        document.body.style.overflow = 'auto';
+        clearInterval(matrixInterval);
+    }, 3000);
+});
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
