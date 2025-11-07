@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sla</title>
+    <title>Test</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="matrix-canvas"></canvas>
+    <div id="loading-screen">
+        <canvas id="matrix-canvas"></canvas>
+        <h1>Carregando Ambiente...</h1>
+    </div>
 
-    <h1>Sla 👍🏻</h1>
+    <main id="home-content" class="hidden">
+        <header>
+            <div class="logo">Manus IA</div>
+            <nav>
+                <a href="#">Início</a>
+                <a href="#">Recursos</a>
+                <a href="#">Preços</a>
+                <a href="#">Login</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h2>Crie o Site dos Seus Sonhos com o Poder da Inteligência Artificial</h2>
+            <p>Apenas descreva o que você quer, e nossa IA constrói para você em segundos.</p>
+            <div class="cta-container">
+                <input type="text" placeholder="Ex: 'um site para minha cafeteria com tons de marrom'">
+                <button>Criar meu Site Grátis</button>
+            </div>
+        </section>
+    </main>
 
     <script src="app.js"></script>
 </body>
