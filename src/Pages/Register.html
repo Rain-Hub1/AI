@@ -1,11 +1,39 @@
-<div class="register-container">
-    <h2>Crie sua Conta Grátis</h2>
-    <form id="register-form">
-        <input type="text" placeholder="Seu Nome" required>
-        <input type="email" placeholder="Seu E-mail" required>
-        <input type="password" placeholder="Crie uma Senha" required>
-        <button type="submit">Criar Conta</button>
-    </form>
-    <p>Já tem uma conta? <a onclick="loadPage('Login.html')">Faça Login</a></p>
-</div>
-<script src="src/UI/Script/Register.js"></script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Manus IA</title>
+    <link rel="stylesheet" href="../UI/Style/main.css">
+    <link rel="stylesheet" href="../UI/Style/Pages/Register.css">
+    <link rel="stylesheet" href="../UI/Style/Input.css">
+    <link rel="stylesheet" href="../UI/Style/Button.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Manus IA</div>
+        <nav>
+            <a href="../../index.html">Início</a>
+            <a href="Register.html">Cadastre-se</a>
+            <a href="Login.html">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="register-container">
+            <h2>Crie sua Conta Grátis</h2>
+            <form>
+                <input type="text" placeholder="Seu Nome" required>
+                <input type="email" placeholder="Seu E-mail" required>
+                <input type="password" placeholder="Crie uma Senha" required>
+                <button type="submit">Criar Conta</button>
+            </form>
+            <p>Já tem uma conta? <a href="Login.html">Faça Login</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Manus IA. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
