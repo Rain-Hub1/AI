@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test AI</title>
-    <link rel="stylesheet" href="src/UI/Style/Input.css">
-    <link rel="stylesheet" href="src/UI/Style/Button.css">
-    <link rel="stylesheet" href="src/UI/Style/Pages/Login.css">
-    <link rel="stylesheet" href="src/UI/Style/Pages/Register.css">
+    <title>Início - Manus IA</title>
+    <link rel="stylesheet" href="src/UI/Style/main.css">
 </head>
 <body>
     <header>
-        <div class="logo">Test AI</div>
+        <div class="logo">Manus IA</div>
         <nav>
-            <a href="#" onclick="loadPage('Home.html')">Início</a>
-            <a href="#" onclick="loadPage('Register.html)">Cadastre-se</a>
-            <a href="#" onclick="loadPage('Login.html')">Login</a>
+            <a href="index.html">Início</a>
+            <a href="src/Pages/Register.html">Cadastre-se</a>
+            <a href="src/Pages/Login.html">Login</a>
         </nav>
     </header>
 
-    <main id="content-area">
-        
+    <main>
+        <section class="hero">
+            <h2>Crie o Site dos Seus Sonhos com o Poder da Inteligência Artificial</h2>
+            <p>Apenas descreva o que você quer, e nossa IA constrói para você em segundos.</p>
+            <div class="cta-container">
+                <input type="text" placeholder="Ex: 'um site para minha cafeteria com tons de marrom'">
+                <button>Criar meu Site Grátis</button>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2025 Manus IA. Todos os direitos reservados.</p>
     </footer>
-
-    <script src="src/UI/Script/Main.js"></script>
 </body>
 </html>
