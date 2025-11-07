@@ -1,22 +1,115 @@
 body {
     background-color: black;
-    color: #0F0;
-    font-family: 'monospace';
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     overflow: hidden;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #matrix-canvas {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -1;
+    width: 100%;
+    height: 100%;
 }
 
-h1 {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding-top: 45vh;
+#loading-screen h1 {
+    color: #0F0;
+    font-family: 'monospace';
     text-shadow: 0 0 5px #0F0;
+    z-index: 101;
+}
+
+#home-content {
+    background: linear-gradient(135deg, #1a1a1a, #000000);
+    min-height: 100vh;
+}
+
+.hidden {
+    display: none;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    border-bottom: 1px solid #333;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #00aaff;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    color: #b3b3b3;
+    margin-bottom: 40px;
+}
+
+.cta-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cta-container input {
+    width: 50%;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: white;
+    font-size: 1em;
+}
+
+.cta-container button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cta-container button:hover {
+    background-color: #0056b3;
 }
