@@ -2,10 +2,31 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=Home.html">
-    <title>Redirecionando...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test AI</title>
+    <link rel="stylesheet" href="src/UI/Style/Input.css">
+    <link rel="stylesheet" href="src/UI/Style/Button.css">
+    <link rel="stylesheet" href="src/UI/Style/Pages/Login.css">
+    <link rel="stylesheet" href="src/UI/Style/Pages/Register.css">
 </head>
 <body>
-    <p>Se você não for redirecionado automaticamente, <a href="Home.html">clique aqui</a>.</p>
+    <header>
+        <div class="logo">Test AI</div>
+        <nav>
+            <a href="#" onclick="loadPage('Home.html')">Início</a>
+            <a href="#" onclick="loadPage('Register.html)">Cadastre-se</a>
+            <a href="#" onclick="loadPage('Login.html')">Login</a>
+        </nav>
+    </header>
+
+    <main id="content-area">
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Manus IA. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="src/UI/Script/Main.js"></script>
 </body>
 </html>
