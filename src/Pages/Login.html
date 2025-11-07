@@ -1,10 +1,38 @@
-<div class="login-container">
-    <h2>Acesse sua Conta</h2>
-    <form id="login-form">
-        <input type="email" placeholder="Seu E-mail" required>
-        <input type="password" placeholder="Sua Senha" required>
-        <button type="submit">Entrar</button>
-    </form>
-    <p>Não tem uma conta? <a onclick="loadPage('Register.html')">Cadastre-se</a></p>
-</div>
-<script src="src/UI/Script/Login.js"></script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Manus IA</title>
+    <link rel="stylesheet" href="../UI/Style/main.css">
+    <link rel="stylesheet" href="../UI/Style/Pages/Login.css">
+    <link rel="stylesheet" href="../UI/Style/Input.css">
+    <link rel="stylesheet" href="../UI/Style/Button.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Manus IA</div>
+        <nav>
+            <a href="../../index.html">Início</a>
+            <a href="Register.html">Cadastre-se</a>
+            <a href="Login.html">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <h2>Acesse sua Conta</h2>
+            <form>
+                <input type="email" placeholder="Seu E-mail" required>
+                <input type="password" placeholder="Sua Senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p>Não tem uma conta? <a href="Register.html">Cadastre-se</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Manus IA. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
