@@ -1,45 +1,9 @@
 body {
-    background-color: black;
+    background: linear-gradient(135deg, #1a1a1a, #000000);
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    overflow: hidden;
-}
-
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#matrix-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#loading-screen h1 {
-    color: #0F0;
-    font-family: 'monospace';
-    text-shadow: 0 0 5px #0F0;
-    z-index: 101;
-}
-
-#home-content {
-    background: linear-gradient(135deg, #1a1a1a, #000000);
     min-height: 100vh;
-}
-
-.hidden {
-    display: none;
 }
 
 header {
