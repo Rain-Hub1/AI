@@ -1,39 +1,91 @@
+:root {
+    --background-dark: #0D1117;
+    --background-light: #161B22;
+    --border-color: #30363D;
+    --text-primary: #C9D1D9;
+    --text-secondary: #8B949E;
+    --accent-color: #00BFFF;
+    --accent-hover: #009ACD;
+}
+
 body {
-    background: linear-gradient(135deg, #1a1a1a, #000000);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     margin: 0;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 50px;
-    border-bottom: 1px solid #333;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--background-dark);
 }
 
 .logo {
+    font-family: 'Fira Code', 'Courier New', monospace;
     font-size: 1.5em;
     font-weight: bold;
+    color: var(--accent-color);
 }
 
 nav a {
-    color: white;
+    color: var(--text-secondary);
     text-decoration: none;
-    margin-left: 25px;
-    transition: color 0.3s;
+    margin-left: 2rem;
+    transition: color 0.2s ease-in-out;
+    font-weight: 500;
 }
 
-nav a:hover {
-    color: #00aaff;
+nav a:hover, nav a.active {
+    color: var(--text-primary);
 }
 
 footer {
     text-align: center;
-    padding: 20px;
-    border-top: 1px solid #333;
-    margin-top: 50px;
-    color: #888;
+    padding: 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+
+.cta-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cta-container input {
+    width: 50%;
+    max-width: 600px;
+}
+
+.cta-container button {
+    width: auto;
+    padding: 12px 30px;
 }
