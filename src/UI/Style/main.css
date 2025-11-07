@@ -2,16 +2,17 @@
     --background-dark: #0D1117;
     --background-light: #161B22;
     --border-color: #30363D;
-    --text-primary: #C9D1D9;
-    --text-secondary: #8B949E;
-    --accent-color: #00BFFF;
-    --accent-hover: #009ACD;
+    --text-primary: #E6EDF3;
+    --text-secondary: #7D8590;
+    --accent-manus: #00BFFF;
+    --accent-deepseek-start: #4A00E0;
+    --accent-deepseek-end: #8E2DE2;
 }
 
 body {
     background-color: var(--background-dark);
     color: var(--text-primary);
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -26,16 +27,20 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 3rem;
+    padding: 1rem 3rem;
     border-bottom: 1px solid var(--border-color);
-    background-color: var(--background-dark);
+    background-color: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .logo {
-    font-family: 'Fira Code', 'Courier New', monospace;
+    font-family: 'Fira Code', monospace;
     font-size: 1.5em;
-    font-weight: bold;
-    color: var(--accent-color);
+    font-weight: 700;
+    color: var(--accent-manus);
 }
 
 nav a {
@@ -44,10 +49,17 @@ nav a {
     margin-left: 2rem;
     transition: color 0.2s ease-in-out;
     font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
 }
 
-nav a:hover, nav a.active {
+nav a:hover {
     color: var(--text-primary);
+}
+
+nav a.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-manus);
 }
 
 footer {
@@ -59,19 +71,35 @@ footer {
 }
 
 .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 100px 20px;
+    padding: 6rem 2rem;
+    background-image: radial-gradient(circle at 20% 80%, rgba(74, 0, 224, 0.15), transparent 30%),
+                      radial-gradient(circle at 80% 30%, rgba(0, 191, 255, 0.15), transparent 30%);
 }
 
-.hero h2 {
-    font-size: 3em;
-    margin-bottom: 20px;
+.hero-content {
+    max-width: 800px;
 }
 
-.hero p {
-    font-size: 1.2em;
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(90deg, var(--text-primary), #A5B4FC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
     color: var(--text-secondary);
-    margin-bottom: 40px;
+    margin: 0 0 2.5rem 0;
+    line-height: 1.6;
 }
 
 .cta-container {
@@ -81,11 +109,11 @@ footer {
 }
 
 .cta-container input {
-    width: 50%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 500px;
 }
 
 .cta-container button {
     width: auto;
-    padding: 12px 30px;
+    flex-shrink: 0;
 }
