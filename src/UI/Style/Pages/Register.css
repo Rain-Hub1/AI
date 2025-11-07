@@ -1,0 +1,26 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.register-container h2 {
+    margin-bottom: 20px;
+}
+
+.register-container p {
+    margin-top: 20px;
+}
+
+.register-container a {
+    color: #00aaff;
+    cursor: pointer;
+}
