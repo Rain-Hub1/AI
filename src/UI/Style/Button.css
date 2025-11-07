@@ -1,19 +1,20 @@
 button {
-    width: 100%;
-    padding: 12px 15px;
+    padding: 12px 24px;
     border: none;
     border-radius: 6px;
-    background-color: var(--accent-color);
-    color: var(--background-dark);
+    background-image: linear-gradient(to right, var(--accent-deepseek-start) 0%, var(--accent-deepseek-end) 50%, var(--accent-deepseek-start) 100%);
+    background-size: 200% auto;
+    color: white;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: all 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: var(--accent-hover);
+    background-position: right center;
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
 }
 
 button:active {
